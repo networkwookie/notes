@@ -1,0 +1,435 @@
+Questions
+  What type of Distro is CentOS? RHEL
+  SED research
+
+
+Installation
+  Text install same across most Linux distributions
+  Don't use _ in hostname (not DNS compatiable)
+  Seperate partitions for /home etc folders for stability (Stops drives getting full)
+  Partitions
+    /boot
+    /swap
+    /root
+
+Updates/Packages
+  apt-get (Debian update software - (dpkg - old software))
+    apt-get update  #Updates local database with latest version info
+    apt-get upgrade  #Performs upgrade of all packages, never removes a package if dependency removed
+    apt-get dist-upgrade  #Removes dependencies #If using third party software this may break things
+    apt-get install <package>  #installs package specified
+    apt-get upgrade <package>/apt-get dist-upgrade <package> #updates specific package
+    apt-get dist-upgrade #Upgrades operating system
+    apt-get remove <package>
+    apt-get --purge remove <package> #removes cached copy of package
+    sources.list in /etc/apt #list of repositories system is using
+    sources.list.d #list of official sources
+    apt.conf #in /usr/share/doc/apt/examples
+    apt-key add <key>
+
+  aptitude #menu driven package control
+
+  
+
+  dpkg
+  	dpkg -l #Lists packages installed
+  	dpkg -l <package> #details of package
+  	dpkg -S <file> #which package created the file
+
+  yum (redhat)
+  	yum update #Updates local database with latest version info
+  	yum update <package>
+  	yum install <package>
+  	yum list <search_term> #use wildcards!
+  	yum info <search> #info on package
+  	yum erase <package> #removes package
+  	yum remove <package>  #doesn't remove dependencies
+  	yum groupinstall <software_group>  #install group of software (e.g. SQL Server)
+  	yum grouplist
+    Repositories - /etc/yum.repos.d
+      Can create repo files for new repositories (edited text in file)
+      Keys required from developer (rpm -i-import <key>)
+
+  rpm
+    Mostly used to gather information these days as it doesn't handle dependancies
+    rpm -i <package_name> #simplist inastall command
+    rpm -u <package_name> #updates package (installs if not already installed)
+    rpm -ivh <package_name> #v=verbose h=hashmarks
+    rpm -Uvh <package_name>
+    rpm -qa #query all packages
+    rpm -qi <package_name> #shows version of package
+    rpm -Vp <package_name> #verifies to see if any files are missing
+    rpm2cpio <package> > <cpio_archive> - converts into a format that means you can get to the individual files in a package
+      cpio -i --make-directories < <cpio_archive>
+    Package Names
+      <program>-<version>-<build_number>.<architecture>.<processor>
+      noarch - not dependant on anything
+
+
+Network adapter
+  Enabling
+    edit /etc/sysconfig/network-scripts/ifcfg-eth0
+      Change "ONBOOT=yes", "BOOTPROTO=dhcp", "NM_CONTROLLED=no"
+    command - chkconfig network on  #makes sure network card is on after reboot
+    service network restart #restarts network service
+
+
+Command Line Basics
+  man <command> #manual for commands
+  apropos <key_word> #lists possible commands
+  pwd #print working directory
+  ls #list of file and folders
+  ls -a #list all files including hidden
+    -l #long form
+  cd <directory> #change directory
+  ~ #shortcut to home directory (e.g. can use cd ~)
+  exit #Exits shell and closes
+  logout #Shell only systems
+  history #history (500) of commands run
+  !<command_number_from_history> #runs that command (.bash_history file (ls -a))
+  !! #runs last command
+  Ctrl <arrows> #moves back and forward words
+  Ctrl <a,e> # beginning or end of line
+  Variables
+    <variable_name>=<content>
+    echo $<variable_name>
+    env #shows system variables set
+
+Streams
+  stdin 0
+  stdout 1
+  stderr 2
+
+Redirectors & Pipes
+  <command> > <file> #redirects stdout to file #overwrites by default
+  <command> >> <file> #redirects stdout to file #appending
+  <command> 1> <file> 2> <file> #redirecting stdout and stderror to different files
+    <command> 1> /dev/null 2>> <command.log> #throws away good data, appends errors to log file
+  <command> << <file> #uses file as stdin
+  <command> | <command> #pushes output from one caommand into the next command
+    ls -la | sort <key> -k <column> #sorts directory lising by date
+  tee <file> #show on screen and output to file
+  xargs -d "<delimeter>" <command> #runs the command once for each line of input
+
+
+Processing Text
+  cat <file> <file> #combines text from 2 files as if they were from one file vertically
+  join <file> <file> #joins on first field in data horizontally
+  paste <file> <file> # creates horizontal tabbed data
+  sort -k <field to sort by> #usually used as part of a pipe command
+  | nl #adds line number to output
+  | pr #prepares data for printing
+  | head #shows first 10 lines of data in a file
+  | tail #shows last 10 lines of file
+  | cut -d <delimeter> -f <field>  #gives just the field specified  # e.g | cut -d " " -f 10
+  less <file> #same as more command but able to scroll both ways and search
+  sed -i <insert> -a <append> #text editing for use in scripts
+
+Regular Expressions
+  man 7 regex #regex user documentation
+  range []
+    [<item>,<item>] #e.g fis[h,hing,hed]
+    [<start>-<end>] #e.g test0[2-3].txt
+  wildcards
+    . #any one character
+    * #any number of previous character
+    .* #works like a normal * wildcard
+  special
+    ^ #begining of line #e.g ^This
+    $ #end of line #e.g. this$
+    | #or  <this>|<that>
+    () #slices up expressions
+  Escape
+    \ #escape characte
+
+  examples
+    egrep #same as gerp -E
+    grep -r  <string> <folder>
+    ifconfig | grep -E "ether|eno" #looks for both those expressions
+
+Vi
+  Enter command mode by default
+ 
+  h #left
+  l #right
+  j #up
+  k #down
+
+  : #run longer commands #command prompt
+  i #puts you in insert mode
+  I #insert mode, at beginning of line
+  a #inserts after the cursor
+  o #inserts line after the line you're on
+  cw #change word
+  cc #change whole line
+  :w <file_name> #save file
+  :x #save and exit
+  :wq #save and exit
+  :d #deletes line
+  dd #inline delete of line
+  dw #delete word #cursor needs to be at beginning of word
+  D #deletes everything after the cursor
+
+  yy #copies whole line (yank)
+  yw #copies whole word
+  p #pastes (puts)
+
+  esc #moves out of insert mode - to command mode
+  :q! #exit without saving changes
+  ZZ #save and exits
+  :w! #overwrite file (ignoring error messages)
+  :e <file_name> #opens new file/creates new file
+
+
+  :set number #adds line numbers
+  vi +<line_number> <file> #opens file and jumps to specified line number
+  /<search_string> #inline search
+  /<enter> #repeats search
+    n #next find
+    N #previous search
+  ?<search_string> #searches backwards
+  :s/<search_string>/<replacement_string>  #search and replace (from your cursor forwards)
+  :%s/<search_string>/<replacement_string>  #search and replace for whole file
+  :<begin_line>_<end_line>s/<search_string>/<replacement_string>  #search and replace within lines specified
+  :<begin_line>_<end_line><command> #specifies range that command applies to
+  .vimrc #configuration file, add commands to always run
+
+Shared Libraries
+  .so #shared object
+  stored in:-
+    /usr/lib
+    /usr/lib64
+  <library>.so.<major_version>.<minor_version>
+  Software linked. Only one library present, major version linked to minor version
+  May have more than one major version
+  ld #library deamon
+  ldconfig -v #list of all libraries on system #shows link name
+  ldd <program> #list dependencies
+  Third party files:-
+    file /etc/ld.so.conf says to include everyting in ld.so.conf folder
+  To manually add library:-
+    1: Copy file to /usr/lib64 (or /usr/lib)
+    2: Add link (Symbolic Link)
+         Hard Link
+         ln <target_file> <name_of_link> #usually just the major version part of the name
+         Change permission (usually 755)
+         (Hard links need to be on same partitions, don't work for directories either)
+         Soft Link
+         ln <target_file> <name_of_link> -s #usually just the major version part of the name
+  If wanting to use updated library, install new library, remove link, add new link
+
+Managing Processes
+  ps -a #list all processes for current user
+  ps -A #lists processes for all users
+  ps -u root #list all root processes (Ubuntu)
+  [ctrl]z #puts process into background
+  jobs #shows programs running
+  fg <job_number> #brings process back into use
+  %<job_number> #same as above
+  kill <process_id> #get job id from ps
+  <application> & #run as a service
+  stress -c 1 -timeout 180 #runs CPU at 100% for specified time
+  nice -n <priority> <program> #how much priority a program gets -20 = top priority
+    can re-nice in top
+  killall -i <program> #kills all instances of same program -q for no prompts
+  kill -9 #kill without prejudice
+
+Hardware
+  dmesg #displays boot sequence
+  Drivers
+    lsmod #see all different modules loaded on top of the kernel
+    lspci #list all pci cards (and integrated modules) that were detected
+    lsusb #list removable components
+    modprob #to manage modules
+      modprob <module_name>
+    rmmod #to remove modules
+    cat /proc/modules #lists modules that are running (additional information - Is it live and an address)
+  /dev #folder for all hardware
+  /etc/udev/rules.d/ & /lib/udev/rules.d/ #rules files to map hardware to names
+  Check BIOS > Check Driver > Delve into commands above
+  Redirecting video output to serial port (virtual hardware)
+    edit /boot/grub/grub.conf
+      disable splash image
+      add following lines below hidden menu line
+        "serial --unit=1 --speed=9600"
+        "terminal --timeout=300 console serial"
+      add "console=tty0 console=ttyS1,9600n8" to end of kernel line
+    edit /etc/securetty
+      add line:-
+        "ttyS1"
+    edit /etc/init/ttyS1.conf
+      "start on runlevel [1345]
+       stop on runlevel [S06]
+       respawn
+       instance /dev/ttyS1
+       exec /sbin/agetty ttyS1 9600 vt100-nav"
+    edit /etc/inittab
+      change id:5:initdefault to id:3:initdefault
+    
+Hard Disks
+  Maybe put home directory in different partition
+  Disks go from SDA - SDB - SDC etc SDx
+  Partitions SDA1 - SDA2 - SDA3 etc SDAn
+  Work flow
+    Partition
+    Format (adding a file system)
+    Mount
+    (Make mount at reboot)
+  fdisk #command line tool for administering disks
+  fdisk /dev/SDx #enters tool for amending partitions.
+    Only 4 primary partitions
+  gdisk #another disk utility
+  mkfs #used to format disk
+    mkfs -t <file_system_type> <partition> #example
+  mount #shows what is mounted
+  mount <hardware> <folder> #mount hardware to a folder
+    mount /dev/cdrom /mnt/cdrom 
+  df -h #human readable disk usage
+  To make the mount persist at reboot:-
+    edit /etc/fstab
+
+LVM
+  Advanced partition manager
+  pvcreate <drive(s)> #imports physical drives into LVM
+  pvdsiplay #displays drives mapped into LVM
+  create volume group
+    vgcreate <name> <drives_part_of_group>
+      vgcreate vg1 /dev/sdb /dev/sdc #example
+    vgdisplay #display volume group information
+  create logical volume
+    lvcreate -L <size> <volume_group> -n <name> #create logical volume (partition)
+    lvdisplay #display logical
+  lvresize -L +<size> <logical_partion> #resizes volume
+    need to size file system too..
+  resize2fs <logical_partition> #ext resizes partition to maximum size
+  vgextend <name_of_volume_group> <drive> #adds drive to volume group
+
+File system health
+  /etc/fstab #file of accessible file systems
+  5 ways to reference file systmes
+    Filename:     /dev/sda1
+    Label:        LABEL=Sales
+    UUID:         UUID=1318f765-f170-4933-8295-fd49ba6f040a
+    GPT Label:    PARTLABEL=EFI
+    GPT UUID:     PARTUUID=c6c21355-9dbe-485f-a50a-d422458bc1e2
+  lsblk -f #shows block devices (apart from GPT)
+  blkid #shows GPT block devices
+  tune2fs -L <label> <drive> #Add/change label on drive
+
+  df -h #shows disk usage
+  du -h #shows file usage
+  du -c #shows total at end
+
+  fsck #file system integrity check
+  fsck -t <file_system_type> <drive> #specifies drive to check
+
+  fstransform #converts file system for drive
+
+  debugfs #creates RAM drive for use with debugging etc
+
+  dumpe2fs <file system> #lots of information about the file system
+
+  tune2fs #can change drive settings
+  tune2fs -c 60 -i 6m <drive> #do file system check every 60 mounts or every 6 months
+  tune2fs -j <drive> #turns on journalling (for ext2 drive)
+    edit fstab and set drive to ext3
+
+File Management
+  ls -F # Directories show up as <file>/
+  first character . means hidden file
+  cd #No parameters means go to root
+  cp ./<sub_directory> #copies to relative sub directory
+  cp -R * ./<directory> #Recursive mode, copies sub-directories too
+  rm -r ./<sub_directory> #removes sub-directory and files
+
+File Archives
+  tar #tape archive #combined with gzip usually
+  gzip #compresses
+    tar cvfz <archive_filename>.tgz <files_to_backup> #create gzip volume
+    tar xvcf <archive_file_to_unpack> #expand archive
+  cpio #copy io, usually combined with find.
+    find ./<files> | cpio -o > <backup_file>.cpio #create archive
+    find ./<files> | cpio -o | > gzip <backup_file>.cpio.gz #create zipped archive
+    gunzip ./<backup_file>.cpio.gz
+     gpio -i < <backup_file>.cpio # extracts files
+  dd #disk duplicator
+    sudo dd if=<volume> of=<output_file>.img #backs up everything (including white space!!)
+    #reverse for restoring images bit by bit
+
+File Permissions
+  User #person who owns the file
+  group #group in control of file
+  permissions
+    1 - File or directory #d for directory
+    2-4 - permissions for users
+    5-7 - permissions for groups
+    8-10 - permissions for others (i.e. not user or groups)
+      -uuugggooo
+    r #read
+    w #write
+    x #execute
+  chown #change owner/group
+    chown <user>:<group> <file> #change ownership
+    chown -R <user>:<group> <directory> #change ownership on all files in a directory
+  chmod #change permissions
+    chmod u+x <file> #modifies user to add execute
+      u #user
+      g #group
+      o #others
+      w #write
+      r #read
+      +
+      - #take away permissions
+      x #execute
+      , #set multiple permissions at once
+    chomd 700 <file> #using bit values
+      4 - read
+      2 - write
+      1 - execute
+  umask #set default permissions #defined in .bashrc
+    same as subnet masks
+  chgrp <group> #will just change group
+
+Disk Quotas
+  per drive configuration
+  edit /etc/fstab
+    add ,usrquota,grpquota where defauls is.
+    need to reboot or unmount/remount
+      mount <drive> <folder> -o <same options as fstab file>
+  quotacheck -cug <mount_point> #create quota database, u #user, g #group
+    aquota.user/group created
+  quotaon -a #turns on quotas for everyone, -u <user>, -g <group>, #default quota of 0!
+  quotaoff #reverse of on
+  edquota <user>/<group>
+    can't edit blocks or inodes
+    dumpe2fs <drive> #block size for drive
+    Will need to do some maths!!
+    Can use actual sizes sometimes
+  quota <uaer>/<group> #views quota information
+  repquota -vsgu <mount point> #information about all quotas on drive
+
+Locating files
+  fhs #file hierachy standard #can google this
+  /bin #binary files #distribution files
+  /sbin #system binarys, expected to be used by the operation system.
+    rarely modify bin or sbin
+  /usr #user programs, programs that user has installed
+    has own /bin and /sbin
+  /etc #configuration files
+  /dev #devices (hardware)
+  /proc #processes information
+  /var #variable,various - whatever you want e.g. web pages
+  /tmp #temporary files #wiped out every reboot
+  /lib /lib64 #Libraries
+    /usr/lib
+  /opt #optional add-ons (used a lot by redhat)
+  /mnt #mounts
+  /media #used a lot on moderen systems instead of /mnt
+  /srv #used by services to store data #not every service uses this folder
+
+Boot Loaders
+  GRUB
+    /boot/grub #usually
+    grub.cfg #used by grub version 2 only
+    menu.list #used in grub 1, combined into grub.cfg in grub v2
+    16:11
