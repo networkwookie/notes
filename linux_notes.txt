@@ -432,4 +432,40 @@ Boot Loaders
     /boot/grub #usually
     grub.cfg #used by grub version 2 only
     menu.list #used in grub 1, combined into grub.cfg in grub v2
-    16:11
+    grub v1
+      really only files needed are: grub.conf and menu.lst
+      grub.conf
+        default=0 #choose first OS in list
+        title #distrubution
+        chainloader +1 #turn over to new bootloader
+      menu.lst #on some distros this has all the menu options, in red hat this is combined into the grub.conf file
+      grub-install <drive>
+      efibootmgr -c -l \\EFI\\rehat\grub.efi -L GRUB #command required to reinstall grub on EFI system
+    grub v2
+      GRUB v2 uses it's own editer without needing to edit grub.cfg
+      /etc/default/grub #contains default grub config
+      takes any file from /etc/grub.d
+      grub2-mkconfig #run this to compile new grub bootloader config #orgrub-mkconfig #or update-grub #or upgrade-grub2
+      easier to update when grub is running
+
+
+Linux initialization
+  /sbin/init #initialization programme, fires up SysV initialization process
+  run levels
+    1 #Single user mode, used during maintenance - locks other users out.
+    2 #Multi user CLI mode, no networking
+    3 #Full mult user CLI
+    4 #Not defined, can define your own
+    5 #Multi user with GUI
+    runlevel #shows previous and current run levels
+    init <run_level> #changes to that run level
+  SysV limitations #all config in one file, only recognizes hardware at init
+  UPSTART
+    Compatible with SysV init
+    Multiple config files
+    Easier commands
+    /etc/init/ contains all the scripts for init
+    Add script for each process, specifying which level to run at
+    chkconfig <service> on #command to tell init to start the service
+    chkconfig --level <levels> <service> on #tells init to run this service at these run levels
+    chkconfig --list #shows services and how they are configured
