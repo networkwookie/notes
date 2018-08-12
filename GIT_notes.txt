@@ -1,0 +1,74 @@
+GIT Notes
+
+  Distributed version control system
+  Non-linear development
+  Modified state #Files that were previously submitted but have now changed
+  Staged state #Files that are prepared to be saved
+  Committed state #Files that are submitted changes to be saved in local database
+  Working directory #
+  Staging area #
+  .git directory #where all the git information is stored
+  ~/.gitconfig #Git configuration
+
+  Initial configuration
+    git config --global user.name '<name>'
+    git config --global user.email '<email@email>'
+    git config --global core.editor <path to program> #set default editor
+    git config --list #shows config settings
+
+  Creating local repository
+    git init #creates repository in current location
+      #creates .git folder
+      #can remove .git to delete repo
+
+  Cloning repository
+    git clone <url> #cloning remote repository (into current folder)
+
+  Making changes to Repo
+    Files are untracked by default (even in folder)
+    git status #good tshoot command (show untracked files)
+    git add <file> #move file to staged state (new or modified files)
+    git commit -m "<message>" #commits changes to repo
+    git log #log of actions made in repo
+    git diff #every change to already committed files
+
+  Fixing mistakes
+    git commit --amend #change commit messages in top of file
+    git mv <file_to_move> <directory_to_move_to> #move misplaced file (and stages it)
+      #needs committing afterwards
+    git rm <file> #removing file from repo (will be in previous snapshot)
+      #deletes local file too
+    git rm --cached <file> #remove file from staging
+    git rm --cached -r <folder> #remove sub folder from staging
+    git checkout -- <file> #discard any changes
+    git reset --hard #discards changes #avoid using if possible
+
+  Connecting to remote repo
+    git remote -v #provides information about remote repository
+    git remote add <name> <url> #links to remote repo #use 'origin' as name if on github
+    git remote remove <name> #removes link to remote repository
+    git remote rename <old_name> <new_name> #renames remote repo link
+
+  Syncing local changes to remote Repo
+    #Do at end of day
+    git push <name> <branch> #syncs to remote repo (usually use 'master' for branch)
+
+  Branches
+    git branch #shows current branch
+    git branch <branch_name> #create branch (copies current branch)
+    git checkout <branch_name> #move to branch for working on
+    git push origin <branch_name> #Sync branch to remote repo
+    git branch -d  <branch> #delete branch (locally) #remember to delete on remote
+
+  Merging
+    git merge <branch> #merges from specified branch into current branch
+    git push origin master #push to remote
+    #Edit file to delete/merge confilcts
+    git add <file> #add files
+    git commit #
+
+  Remote
+    #pull is a fetch and a merge
+    git checkout -b <local_branch> origin/<remote_branch>
+    git pull origin <remote_branch> #merges into current branch #need to re-push
+
