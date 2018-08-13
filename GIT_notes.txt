@@ -64,6 +64,7 @@ GIT Notes
     git merge <branch> #merges from specified branch into current branch
     git push origin master #push to remote
     #Edit file to delete/merge confilcts
+      Split up by =====
     git add <file> #add files
     git commit #
 
