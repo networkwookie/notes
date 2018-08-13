@@ -65,6 +65,7 @@ GIT Notes
     git push origin master #push to remote
     #Edit file to delete/merge confilcts
       Conflicts shown in >>>>Head and >>>>>tails
+      Split up by =====
     git add <file> #add files
     git commit #
 
