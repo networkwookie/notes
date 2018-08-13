@@ -1,0 +1,404 @@
+Python Notes.
+
+Interpreter Shell - Ctrl D to Exit
+
+Expression is something that evaluates to a value
+
+Statement is a complete line of code
+
+
+Naming Conventions
+  Variable names, function names, object names, and module names
+    lower case separated by underscore, for example:
+    my_router 
+        find_set_of_devices
+        convert_id_string_to_list
+
+  class names
+    capitalize the first letter of each word.  Do not use any underscores.  For example:
+      ManyToManyField
+      ClientHistory
+      UserProfile﻿﻿﻿
+
+    constants
+    all upper case; use underscores for word separation.
+      PI = 3.14
+      EMAIL_MODE
+      EMAIL_FROM_ADDRESS
+
+Help
+  dir()             #Shows variables configured in current module
+  dir(str)           #Shows methods available - ignore underscores (internal)
+  help(<datatype>.<method>)   #Help on method
+    l... = left (e.g. lstrip = leftstrip)
+    r... = right
+
+Variables
+  type(<variable>) #shows type of variable
+  Variable names can include alphanumeric characters and underscore
+  Variable names can't begin with a number
+  Variable names are case-sensitive
+  Variables beginning with _some, __some, or __some__ are special
+
+Strings
+  Immutable
+  /n         #new line
+  /t         #tab
+  /         #escape character (so to include /n as string use //n)
+  ' or " or ''' can be used (useful if using special characters)
+  r'<string>'   #raw string (doesn't recognise special characters)
+  
+  Methods
+    <variable>.split('<delimeter>')         #splits variable into list - not specifying delimeter deals with multiple spaces
+    <variable>.strip()                 #Removes leading and trailing space and special characters
+    '<delimeter>'.join('variable')           #joins list together, seperating by delimeter
+    len(variable)                   #displays length of string
+    <variable>[<index from left:index on right>]   #slices characters from string - needs to be assigned to new string
+    <variable>.capitalize()             #capitalizes first letter in string
+
+  '<substring>' in (not in) <string>           #searches for substring in string (result is boolean)
+
+Templates
+  <variable>               #"text {} text"
+    <variable>.format('<text>')   #adds this text into the space where the brackets are
+    <variable>.format('<variable>') #adds in variable
+
+Print
+  print "<string>"
+  print "<string>" + <variable> + "<string>"               #includes variable in string
+  print "<string> %s <string> %s" % (<variable>, <variable>)       #includes variables in output (in order) (the 's' in '%s' means string)
+  print "%s %s %s" %  (a,b,c)                     #prints out variables in order
+  print "%15s %15s %15s" %  (a,b,c)                   #defines width of columns (right justified)
+  print "%-15s %-15s %-15s" %  (a,b,c)                 #defines width of columns (left justified)
+  print "%.2f" % a                           #f means floating point, 2 shows number of decimal digits
+  print "<string> {0} <string> {1}".format(<variable>, <variable>)   #more modern method
+  print("<string")                           #in python 3, print is a function
+  print '<string>' * <multiplier>                   #prints out the string the number of times specified
+
+  pretty printing dictionaries
+    import json
+    print json.dumps(<variable>, indent=4)
+  
+
+Input
+  <variable>       #raw_input("<prompt>")
+
+  sys.argv
+    import sys
+    print sys.argv   #prints out whatever arguments you put in #quick and dirty
+
+  argparse       #input in unix like manner
+    import argparse
+
+    <object> = argparse.ArgumentParser(description='<text description>')             #creates a parser object with description added (used under -h or --help)
+    <object>.add_argument('<short_flag>', '<long_flag>' help='<help text', required=<boolean>)   #adds an flag for use by the parser
+    <parsed_object> = <object>.parse_args()                           #Parses all the arguments and renders 
+    <variable> = <parsed_object>.<flag>                             #Puts the individual parameter(flag) into a variable
+  
+Numbers
+  #Integer division will give back integer result (doesn't round, just drops the numbers after the decimal point
+  #Make one number in an operation a float (ie add a . something) to give float answer
+  int(<number>)     #converts from a string to an integer
+  bin(<number>)     #returns binary number = 4 = 0b100
+  hex(<number>)     #returns hex number = 10 = 0xa
+  int(<number>, 2)   #converts from binary to integer (using base 2)
+  str(<number>)     #casts a number as a string
+  
+  import math     #imports lots of maths functions (use dir(math) to see what is available)
+    math.<method>   #e.g math.pi
+
+
+
+Lists
+  #mutable, changable  
+  <variable> = [<item>, <item>, <item>]    #Defines list
+  #Doesn't have to have same data types for elements
+  <list>[<element>]               #e.g. a[0] = first element in list
+  <list>[<element>] = <value>         #Used to change item value in list
+  len(<list>)                 #returns number of items in a list
+  len(<list>[<element>])             #returns length of element
+  <list> + <list>               #concatenates list - Can use <list> = <list>.extend(<other_list>) to add together and overwrite original list
+  methods
+    <list>.append()
+    <list>.pop()               #removes the last item of the list (and returns it)
+    <list>.pop(<element>)           #removes indicated item from list
+    <list>.remove(<value>)           #looks for a value and deletes the first one encountered
+  range(<value>)                 #creates list with range of numbers from 0 up to the value
+  range(<starting_value>, <ending_value>)   #creates a list of numbers in that range
+  <list>[<starting index>: <ending index>]   #slice of list, ending index is excluded
+  <list>[<starting index:]           #slice of list from stating index to end of list
+  <list>[:]                   #slice of whole list (making a copy b = a[:])
+  <list>.insert(<index value>, '<element>)   #inserts new element into specified index (moving all others up one)
+
+
+Tuple #(unchangeable list) #have better performance
+  <variable> = (<element>, <element>)
+  #Changing list to a tuple <variable> = tuple(<variable>)
+
+Boolean
+  True/False   #No quoutes, capital letter
+
+  
+If Conditionals
+  #null strings ('') are False, any other string is True (e.g. if <variable>: )
+  #0 and 0.0 are False, any other number is True
+  #Blank lists, tuples and dictionaries are False, any others are True
+  #None is False
+  == > <  ! are comparison operators
+  < less than
+  > greater than
+  and (lowercase) or (lowercase)
+  Syntax:-
+    If <expression>:
+      <statement>
+      <statements>
+    elif <expression>:
+      <statement>
+      <statements>
+    else:
+      <statement>
+      <statements>
+    
+For Loops
+  for <variable> in <something>:
+  enumerate (<variable>)                   #gives back series of tuples with index and value
+    for <variable>,<variable> in enumerate(<something>) #puts tuple items into variables
+
+  for key, value in <dict>.items()             #useful for printing out dictionaries
+    print key, value
+
+  #Continue - means to move straight on to the next iteration in the loop
+  #Break - Breaks out of the for loop (the loop that the break is in - not the whole nest)
+  #Pass - allows empty block of code 
+
+While Loops
+  while <expression>:
+    statement
+    statement
+  while True:
+    if <expression>:
+      break
+    statement
+    statement
+
+Dictionaries (same as arrays)
+  <dictionary> = {}
+  <dictionary> = {
+    <key>: <value>,
+    <key>: <value>,
+    <key>: <value>,
+    }
+  <dictionary> = dict(<key>=<value>)      #easier to type if creating a dictionary
+  <dictionary>['<key>'] = '<value>'      #adds entry to dictionary
+  the dictionary is unordered
+  #Keys need to be unique
+  #Keys are 'usually' are strings
+  <dictionary>['key']             #returns <value>
+  <dictionary>['key'] = <value>         #changes value (or adds new key value)
+  del <dictionary>['key']           #deletes key value
+  <dictionary>.get('key', '<string>')     #returns value. If key not present returns specified string rather than error
+  <key> in <dictionary>             #checks if True or False
+  <dictionary>.keys()             #Returns keys as a list
+  <dictionary>.values()            #Returns values as a list
+  <dictionary>.items()            #Returns items as tuples in a list
+  for <variable>,<variable> in <variable>.items():
+    something <variable>
+    something <variable>
+  <dictionary>.update(<other dictionary)     #adds dictionaries together
+  <dictionary>.pop("key")           #removes and returns specified key/value pair
+  print json.dumps(<dictionary>, indent=4)  #pretty prints our dictionary
+
+Exceptions
+  try:
+    statement
+    statement
+    statement
+  except <error>:
+    statement
+  except <error>:
+    statement
+  except <error> as <variable>:
+    statement
+
+
+Functions
+  def <name>(<parameters>):
+    <statements>
+    return <value>     #stops processing function when return is hit
+    '''
+    <Doc String>     #within triple qoutes
+
+    params:
+      what paramaters can be passed
+
+    return:
+      what information is returned
+    '''
+
+  <name>(<parameters>)                           #Calls function and runs statements in function
+  Return <values>                              #default of "None" (can be assigned to variables etc) #Nothing is executed after return value
+  Help(<function>)                             #returns doc string
+  #By default the parameters are assigned to the variables based on position, can name if required - <name>(paramenter=<value>, parameter=<value>, etc)
+  def <name>(parameter=<value>)                       #assigns a deafult value to a variable (use names when passing in variables to create clarity)
+
+  create module <name>.py
+    import <name>
+    run functions <module name>.<function>(<parameters>)
+
+  from <module name> import <function name>                #import function from module into local namespace using:-  
+  from <module_name> import <function_name> as <local_function_name>     #imports as a new function name
+
+
+Namespaces
+
+  Functions have their own namespace, own local variables
+  Python looks in local namespace, then module namespace if variable doesn't exist in local namespace
+  Caution! List dictionaries and objects can be modified from within a function, whereas intergers and strings are immutable and so can't be. 
+
+Windows IDLE filesystem
+  import os       #To import OS functions
+  os.chdir(r'<full path>')
+  os.getcwd()     #Lists current working directory
+  os.listdir('.')   #directory listing of current working directory
+
+Files
+  <variable> = open("<filename>", "r")     #Reads files into memory
+  <variable> = open("<filename>", "rb")     #Reads binary files into memory  
+  <variable> = <variable>.readlines()     #reads lines from memory into a variable (as a list)
+  <variable>.readline()             #reads file from memory a line at a time (iterative)
+  <variable>.read()               #gives back a string
+  for line in <variable>:           #iterates over each line in file
+  <variable> = open("<filename>", "w")     #Writes to file (Overwrites)
+  <variable> = open("<filename>", "rb")     #Writes to binary file (Overwrites)
+  <variable>.write("<string>")         #writes string to file
+  <variable>.write(<variable>)         #writes content of variable to file
+  <variable>.close()               #Closes file (writing out from buffer)
+  <variable>.flush()               #Writes out content from buffer to file (before this the content might not appear in the file)
+  <variable> = open("<filename>", "a")     #appends to end of file
+  <variable>.seek(0)               #moves file pointer to beginning of file
+  with open("<filename>") as <variable>:
+    <statements>
+    <statements>              #Automatically closes the file at end of processing, even if there is an exception.
+  
+  The following web page has details on the different Python file open modes:
+    http://www.tutorialspoint.com/python/python_files_io.htm
+    See the table (about 1/3 of the way down the page) with the column headers "Modes" and "Description" in "the open Function" section ("r", "rb", "r+", "rb+", etc.).
+
+Regular Expressions
+  import re
+  <variable> = re.search(r"<pattern>", <string>)
+  https://developers.google.com/edu/python/regular-expressions
+  <variable> = re.search(r"(<pattern>)<something(<pattern>), <string>)     #puts each search into groups
+    <variable>.group(<group number>)                     #Do something with each group.
+  <variable> = re.findall(r"<pattern>", <string>)               #finds all matches and returns as a string. Can be used to iterate over a file.
+  <variable> = re.findall(r"(<pattern>)<something(<pattern>)", <string>)     #returns matches as list of tuples
+  <variable> = re.search(r"<pattern>", <string>, re.IGNORECASE)         #options available (IGNORECASE, DOTALL, MULTILINE)
+  re.sub(r"<thing to find>", "<replacement>, <variable to work on>)       #replaces found string with something else.
+  $ = end of string
+  ^ = beginning of string
+  http://packetpushers.net/regular-expressions-for-network-engineers/  
+
+Modules
+  import <module>           #Imports whole module, need to use <module>.<function>() to use functions
+  from <module> import <function>   #Imports function, can just use function name in code
+  import <module> as <new_name>     #Imports module as different name to avoid name conflicts
+  #During import, the module is executed (only happens once) - happens even if you just import a function from a module
+  #Modules have their own namespace
+  if __name__ == '__main__':       #Seperates executable code from definitions
+    <statements>
+
+PYTHONPATH - Windows
+  Note, I had trouble finding a good document on modifying the PYTHONPATH in Windows.  Here is how you can modify the PYTHONPATH environment variable using the 'set' command (tested on Windows XP, but this should also work on Windows7).  This is from the 'command prompt' and is only usable during that command prompt session.
+   
+  # Shows my current PYTHONPATH
+  C:\Python27>set PYTHONPATH
+  PYTHONPATH=C:\Python27\Lib;C:\Python27\DLLs;C:\Python27\Scripts
+   
+  # Sets a new PYTHONPATH (appending to the current %pythonpath%)
+  C:\Python27>set PYTHONPATH=%pythonpath%;C:\Python27\ktb;
+   
+  # Checks that the PYTHONPATH is right
+  C:\Python27>set PYTHONPATH
+  PYTHONPATH=C:\Python27\Lib;C:\Python27\DLLs;C:\Python27\Scripts;C:\Python27\ktb;
+   
+  # Test that it works correctly (C:\Python27\ktb contains z_test.py)
+  C:\Python27>python
+  >>> import z_test
+  Hello world
+   
+  You can also permanently modify this PYTHONPATH variable by editing your Windows Environment Variables (the below link shows you how to edit Environment Variables in Windows7).  On my old Windows XP system, PYTHONPATH is a 'System Variable' (NOT a User Variable) and is set to:
+    PYTHONPATH = C:\Python27\Lib;C:\Python27\DLLs;C:\Python27\Scripts
+  Be careful when editing your system's Environment Variables--you can cause significant problems with your computer (if done incorrectly).
+
+Packages
+  Is a directory with a blank __init__.py file in it.
+  import <package>.<module>
+  from <package> import <module>
+  from <package>.<module> import <function>
+  __init__.py is excecuted on import, so it can be used to import other packages, modules and functions
+
+
+Classes
+  A blueprint for creating objects
+  class <ClassName>(object):                #Base level object
+
+  class <ClassName>(<parent-class>):             #creates class that inherits other class
+    def __INIT__(self, <parameters>):           #Creates INIT method, if none, looks in parent class
+      <parent-class>.__INIT__(self, <paramters>)     #Calls INIT from parent class and passes parameters
+  
+Methods
+  class <ClassName>(object):
+    def __INIT__(self, <parameter>, <parameter>, <parameter>   #Method to define attributes
+    self.<attribute> = <parameter>
+    self.<attribute> = <parameter>                 #sets pointer to object in memory
+
+    def <method-name>(paramenters)                 #defines method in class. If the parameter is self then the object is passed in
+      return <something>
+
+    #Will look in parent class if inherited
+
+
+Objects
+  <objectname> = <ClassName>()         #Creates object
+  <objectname>.<attribute> = <something>     #Manually adds an attribute to an object
+
+  <objectname> = <ClassName>(parameters)     #Creates object, passing parameters into the attributes
+
+  <objectname>.<attribute> = <something>     #able to access the attribute directly
+
+Running as script
+
+  python <script_name>.py
+
+  always add:-
+    #! /usr/bin/env python - specifies version of python to use (set in linux variables)
+    
+    if __name__ == "__main__":
+  
+
+netmiko
+  import netkiko
+
+  from netmiko import ConnectHandler                                       #imports connection handler
+
+  <device_variable> = ConnectHandler(device_type=platform, ip=host, username=username, password=password)   #connects to device specified in parameters (carry out things by referencing the variable)
+
+  <variable> = <device_variable>.send_commands('<command>')                           #sends the command listed as a parameter to the device and stores output in the variable
+
+  <device>.send_config_from_file(<file_name>)
+
+  <device>.send_command_timing('<command>')                                   #sends command but doesn't wait for prompt to return to original state (e.g. if going into interface config mode)
+  
+  is_alive()                                                   #checks if SSH session is still alive
+
+  <device>.disconnect()
+
+IDEs
+  Sublime text editor
+
+YAML
+  import yaml
+  <variable> = yaml.load(<file object>)       #imports yaml file in dictionary
+  <variable> = yaml.load(open('data.yml', 'r'))
+
+
